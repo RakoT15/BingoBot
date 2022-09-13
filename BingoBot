@@ -1,0 +1,33 @@
+// ==UserScript==
+// @name         BingoBot
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  Bot for bingo
+// @author       Sergey Khodakov
+// @match        https://www.bing.com/*
+// @match        https://auto.ru/*
+// @grant        none
+// ==/UserScript==
+
+let links = document.links;
+let search = document.getElementsByName("search")[0];
+let keywords = ["купить, продать и обменять машину", "Купить автомобили с пробегом по цене"];
+let keyword = keywords[getRandom(0, keywords.length)];
+
+if (search !== undefined) {
+  document.getElementsByName("q")[0].value = keyword;
+ search.click();
+} else {
+
+  for (let i=0; i<links.length; i++) {
+    if (links[i].href.indexOf("https://auto.ru/") !== -1) {
+      console.log("Нашел строку" + links[i]);
+      let link = links[i];
+      link.click();
+      break;
+    }
+  }
+}
+function getRandom(min, max) {
+  return Math.floor(Math.random()*(max - min) + min);
+}
